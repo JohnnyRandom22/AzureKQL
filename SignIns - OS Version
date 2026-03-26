@@ -1,0 +1,13 @@
+SigninLogs
+| where TimeGenerated  > ago(90d)
+| where Status.errorCode == 0
+| extend OS = DeviceDetail.operatingSystem
+| extend OSVersion = DeviceDetail.version
+| extend browser = DeviceDetail.Browser
+| summarize 
+    LastLogon = max(TimeGenerated),
+    OperatingSystems = make_set(OS),
+    Versions = make_set(OSVersion),
+    Browsers = make_set(browser)
+    by UserDisplayName, UserPrincipalName
+| sort by LastLogon
