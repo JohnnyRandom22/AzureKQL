@@ -1,6 +1,5 @@
 SigninLogs
 | project TimeGenerated, UserDisplayName, UserPrincipalName, Status, ResultType, AppDisplayName
-// Konwersja UTC na czas warszawski
 | extend LocalTime = datetime_utc_to_local(TimeGenerated, 'Europe/Warsaw')
 | summarize arg_max(LocalTime, *) by UserPrincipalName
 | project LastLogin = LocalTime, 
